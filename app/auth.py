@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, url_for, redirect
+from flask import Blueprint, render_template, url_for, redirect, flash
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user, login_required, current_user
 from .forms import SignUpForm, LoginForm
 from . import db
 from .models import User
@@ -23,7 +24,7 @@ def register():
         except:
             return 'Error while add user'
     
-    return render_template('register.html', form=form)
+    return render_template('register.html', form=form, user=current_user)
 
 
 @auth.route('/login', methods=['POST'])
@@ -35,9 +36,17 @@ def login():
         password = form.password.data
         user = User.query.filter_by(username=username).first()
 
-    return "<h1>login</h1>"
+        if user and check_password_hash(user.password, password):
+            login_user(user)
+            return redirect(url_for('views.home'))
+        else:
+            flash('Invalid login, please try again', category='invalid_login')
+            return redirect(url_for('views.home'))
+
 
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return "<h1>logout</h1>"
+    logout_user()
+    return redirect(url_for('views.home'))

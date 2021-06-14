@@ -19,6 +19,9 @@ Home
 			content out within the larger container.
 		</p>
 	</div>
+	{% if user.is_authenticated %}
+		<h1>Login successfully</h1>
+	{% else %}
 	<div class="row">
 		<div class="col-sm-6" style="margin: auto;">
 			<div class="card">
@@ -40,6 +43,22 @@ Home
 						<h2>Sign In</h2>
 						<hr>
 					</div>
+					{% with messages = get_flashed_messages(with_categories=true) %}
+						{% if messages %}
+							{% for category, message in messages %}
+								{% if category == 'invalid_login' %}
+									<div class="alert alert-danger" role="alert">
+										{{ message }}
+									</div>
+								{% endif %}
+								{% if category == 'logout' %}
+									<div class="alert alert-success" role="alert">
+										{{ message }}
+									</div>
+								{% endif %}
+							{% endfor %}
+						{% endif %}
+					{% endwith %}
 					<div class="form-group w-100">
 						<div class="mb-3">
 							{{ form.username(class="form-control") }}
@@ -54,5 +73,6 @@ Home
 			</form>
 		</div>
 	</div>
+	{% endif %}
 </div>
 {% endblock content %}

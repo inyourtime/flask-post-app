@@ -1,4 +1,5 @@
 from flask import Blueprint, render_template
+from flask_login import current_user
 from .forms import LoginForm
 
 views = Blueprint('views', __name__, static_folder='static', template_folder='templates')
@@ -7,9 +8,5 @@ views = Blueprint('views', __name__, static_folder='static', template_folder='te
 @views.route('/')
 def home():
     form = LoginForm()
-    return render_template('home.html', form=form)
+    return render_template('home.html', form=form, user=current_user)
 
-
-@views.route('/dashboard')
-def dashboard():
-    return '<h1>Dashboard</h1>'
