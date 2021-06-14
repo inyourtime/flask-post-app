@@ -1,4 +1,18 @@
 body {
+	margin: 0;
+	padding: 0;
 	background-color:white;
 }
 
+#form_register {
+	width: 600px;
+	left: 50%;
+	top: 50%;
+	position: absolute;
+	transform: translate(-50%, -50%);
+}
+
+#form_login {
+	width: 400px;
+	margin: 0 auto;
+}

@@ -5,29 +5,21 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 def create_app():
-	load_dotenv()
-	app = Flask(__name__)
-	
-	app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-	app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URI")
-	app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    load_dotenv()
+    app = Flask(__name__)
 
-	db.init_app(app)
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABASE_URI')
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-	from .views import views
-	from .auth import auth
+    db.init_app(app)
 
-	from .models import Todo
+    from .views import views
+    from .auth import auth
 
-	# create_database(app)
+    app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(auth, url_prefix='/auth')
 
-	app.register_blueprint(views, url_prefix='/')
-	app.register_blueprint(auth, url_prefix='/auth')
-
-	return app
-	
-
-def create_database(app):
-	db.create_all(app=app)
-	print('Created database')
+    return app
