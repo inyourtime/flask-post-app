@@ -28,9 +28,9 @@ def create_app():
         return User.query.get(int(user_id))
 
     from .views import views
-    from .auth import auth
-
     app.register_blueprint(views, url_prefix='/')
+    
+    from .auth import auth
     app.register_blueprint(auth, url_prefix='/auth')
 
     return app

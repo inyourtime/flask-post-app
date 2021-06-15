@@ -14,5 +14,6 @@ body {
 
 #form_login {
 	width: 400px;
-	margin: 0 auto;
+	margin: auto;
+	margin-bottom: 50px;
 }

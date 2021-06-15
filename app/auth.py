@@ -5,7 +5,8 @@ from .forms import SignUpForm, LoginForm
 from . import db
 from .models import User
 
-auth = Blueprint('auth', __name__, static_folder='static', template_folder='templates')
+auth = Blueprint('auth', __name__, static_folder='static',
+                 template_folder='templates')
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -15,16 +16,17 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        hashPassword = generate_password_hash(password)
+        hashPassword = generate_password_hash(password, method='sha256')
         newUser = User(username=username, password=hashPassword)
         try:
             db.session.add(newUser)
             db.session.commit()
+            flash('Now, you can login !', category='register_success')
             return redirect(url_for('views.home'))
         except:
             return 'Error while add user'
-    
-    return render_template('register.html', form=form, user=current_user)
+
+    return render_template('register.html', form=form)
 
 
 @auth.route('/login', methods=['POST'])
@@ -38,15 +40,15 @@ def login():
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-            return redirect(url_for('views.home'))
-        else:
-            flash('Invalid login, please try again', category='invalid_login')
-            return redirect(url_for('views.home'))
-
+            return redirect(url_for('views.dashboard'))
+        
+        flash('Invalid login, please try again !', category='invalid_login')
+        return redirect(url_for('views.home'))
 
 
 @auth.route('/logout')
 @login_required
 def logout():
     logout_user()
+    flash('Logout successfully !', category='logout')
     return redirect(url_for('views.home'))
