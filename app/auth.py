@@ -5,8 +5,7 @@ from .forms import SignUpForm, LoginForm
 from . import db
 from .models import User
 
-auth = Blueprint('auth', __name__, static_folder='static',
-                 template_folder='templates')
+auth = Blueprint('auth', __name__, static_folder='static', template_folder='templates')
 
 
 @auth.route('/register', methods=['GET', 'POST'])
@@ -16,10 +15,10 @@ def register():
     if form.validate_on_submit():
         username = form.username.data
         password = form.password.data
-        hashPassword = generate_password_hash(password, method='sha256')
-        newUser = User(username=username, password=hashPassword)
+        hash_password = generate_password_hash(password, method='sha256')
+        new_user = User(username=username, password=hash_password)
         try:
-            db.session.add(newUser)
+            db.session.add(new_user)
             db.session.commit()
             flash('Now, you can login !', category='register_success')
             return redirect(url_for('views.home'))

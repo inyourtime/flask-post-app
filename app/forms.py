@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length, ValidationError, EqualTo
 from .models import User
 
@@ -48,3 +48,8 @@ class LoginForm(FlaskForm):
     password = PasswordField("password", validators=[DataRequired()], render_kw={
                              "placeholder": "Password"})
     submit = SubmitField("Login")
+
+
+class PostForm(FlaskForm):
+    note = TextAreaField("Enter your note ...", validators=[DataRequired()])
+    submit = SubmitField("Post")

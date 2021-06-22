@@ -33,4 +33,5 @@ def create_app():
     from .auth import auth
     app.register_blueprint(auth, url_prefix='/auth')
 
+
     return app

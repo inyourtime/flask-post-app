@@ -1,9 +1,20 @@
 {% extends 'base.html' %}
 
 {% block title %}
-	dashboard
+dashboard
 {% endblock title %}
 
 {% block content %}
+<div class="container mt-3">
 	<h2>Hello {{ current_user.username }}</h2>
+	<hr>
+	<form action="{{ url_for('views.dashboard') }}" method="post">
+		{{ form.csrf_token }}
+		{{ form.note.label(class="form-label") }}
+		<div class="mb-3">
+			{{ form.note(class="form-control") }}
+		</div>
+		{{ form.submit }}
+	</form>
+</div>
 {% endblock content %}
