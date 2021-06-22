@@ -38,7 +38,7 @@ def dashboard():
 
     role = request.args.get('role')
 
-    if role:
+    if role == 'me':
         notes = Post.query.filter_by(user_id=current_user.id).all()
         # print(notes)
         return render_template('dashboard.html', form=form, notes=notes)
