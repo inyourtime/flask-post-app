@@ -27,6 +27,9 @@ dashboard
 					<div class="card-header"><strong>@{{ note.owner.username }}</strong></div>
 					<div class="card-body">
 						<p class="card-text">{{ note.data }}</p>
+						{% if current_user.username == note.owner.username %}
+						<button class="btn btn-danger btn-sm" onclick="confirmDelete('{{ note.id }}')">Delete</button>
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -37,3 +40,21 @@ dashboard
 	</div>
 </div>
 {% endblock content %}
+
+{% block script %}
+<script>
+	function confirmDelete(note_id) {
+		if(confirm('Are you sure ?')) {
+			fetch(`http://127.0.0.1:5000/note/delete/${note_id}`)
+			.then(res => {
+				if(res.redirected){
+					window.location.href = res.url
+				}
+			})
+			.catch(err => {
+				console.log(err)
+			})
+		}
+	}
+</script>
+{% endblock script %}

@@ -46,3 +46,15 @@ def dashboard():
     notes = Post.query.all()
 
     return render_template('dashboard.html', form=form, notes=notes)
+
+
+@views.route('/note/delete/<int:id>')
+def delete(id):
+    # print(id)
+    note = Post.query.filter_by(id=id).first()
+    try:
+        db.session.delete(note)
+        db.session.commit()
+        return redirect(url_for('views.dashboard'))
+    except:
+        return 'error while delete data'
