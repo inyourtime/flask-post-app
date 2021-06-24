@@ -25,7 +25,7 @@ def register():
         except:
             return 'Error while add user'
 
-    return render_template('register.html', form=form)
+    return render_template('register.jinja', form=form)
 
 
 @auth.route('/login', methods=['POST'])
