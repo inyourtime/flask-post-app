@@ -15,7 +15,7 @@ def home():
     if current_user.is_authenticated:
         return redirect(url_for('views.dashboard'))
 
-    return render_template('home.jinja', form=form)
+    return render_template('home.html', form=form)
 
 
 @views.route('/dashboard', methods=['GET', 'POST'])
@@ -41,11 +41,11 @@ def dashboard():
     if role == 'me':
         notes = Post.query.filter_by(user_id=current_user.id).all()
         # print(notes)
-        return render_template('dashboard.jinja', form=form, notes=notes)
+        return render_template('dashboard.html', form=form, notes=notes)
 
     notes = Post.query.all()
 
-    return render_template('dashboard.jinja', form=form, notes=notes)
+    return render_template('dashboard.html', form=form, notes=notes)
 
 
 @views.route('/note/delete/<int:id>')
